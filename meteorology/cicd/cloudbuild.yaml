@@ -1,0 +1,16 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'functions'
+      - 'deploy'
+      - 'crf-meteorology-dev'
+      - '--runtime=python312'
+      - '--trigger-http'
+      - '--entry-point=entrypoint'
+      - '--region=us-west1'
+      - '--source=/meteorology/src/crf'
+
+timeout: 600s
+options:
+  logging: CLOUD_LOGGING_ONLY

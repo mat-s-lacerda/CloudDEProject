@@ -1,9 +1,9 @@
-import functions_framework
+from functions_framework import http
 from flask import Request
 import logging
 from modules.helpers.logging import set_up_logger
 
-@functions_framework.http
+@http
 def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
     """
     Cloud Function entrypoint
