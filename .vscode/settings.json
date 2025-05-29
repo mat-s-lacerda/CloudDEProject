@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./meteorology/src/crf/api_to_gcs"
+    ]
+}
