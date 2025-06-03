@@ -1,6 +1,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['mb','gs://analytics-weather-data-storage-dev','--location=us-west1']
+    args: ['mb', '-l', 'us-west1', 'gs://analytics-weather-data-storage-dev']
+
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
