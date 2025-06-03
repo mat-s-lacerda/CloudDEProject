@@ -1,14 +1,14 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['mb', 'gs://analytics-weather-data-storage-dev']
-
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    args:
-      [
-        'gcloud', 'storage', 'buckets', 'update',
-        'gs://analytics-weather-data-storage-dev',
-        '--update-labels=env=dev,team=analytics,project=analytics-weather-data'
-      ]
+  #- name: 'gcr.io/cloud-builders/gsutil'
+  #  args: ['mb', 'gs://analytics-weather-data-storage-dev']
+#
+  #- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #  args:
+  #    [
+  #      'gcloud', 'storage', 'buckets', 'update',
+  #      'gs://analytics-weather-data-storage-dev',
+  #      '--update-labels=env=dev,team=analytics,project=analytics-weather-data'
+  #    ]
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
@@ -20,7 +20,7 @@ steps:
       - '--trigger-http'
       - '--entry-point=entrypoint'
       - '--region=us-west1'
-      - '--source=/meteorology/src/crf/api_to_gcs'
+      - '--source=meteorology/src/crf/api_to_gcs'
 
 timeout: 600s
 options:
