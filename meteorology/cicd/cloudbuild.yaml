@@ -1,14 +1,14 @@
 steps:
-  #- name: 'gcr.io/cloud-builders/gsutil'
-  #  args: ['mb', 'gs://analytics-weather-data-storage-dev']
-#
-  #- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  #  args:
-  #    [
-  #      'gcloud', 'storage', 'buckets', 'update',
-  #      'gs://analytics-weather-data-storage-dev',
-  #      '--update-labels=env=dev,team=analytics,project=analytics-weather-data'
-  #    ]
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['mb','gs://analytics-weather-data-storage-dev','--location=us-west1']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      [
+        'gcloud', 'storage', 'buckets', 'update',
+        'gs://analytics-weather-data-storage-dev',
+        '--update-labels=env=dev,team=analytics,project=analytics-weather-data'
+      ]
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'

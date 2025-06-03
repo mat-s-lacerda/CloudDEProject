@@ -16,10 +16,15 @@ def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
 
     logger: logging.Logger = set_up_logger()
 
+    current_date: datetime = datetime.now()
+
     logger.info("Hello from GCP Logging!")
     json_input: dict = request.get_json()
     logger.info(f"JSON received: {json_input}")
 
+    project_id: str = json_input["project_id"]
+
+    run_execution_id: str = json_input["run_execution_id"]
     latitude: float = json_input["latitude"]
     longitude: float = json_input["longitude"]
     start_date: datetime = datetime.strptime(json_input["start_date"], "%Y-%m-%d")
@@ -29,10 +34,17 @@ def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
     forecast_api_handler: ForecastAPIHandler = ForecastAPIHandler(latitude, longitude, timezone)
     data: dict = forecast_api_handler.get_forecast(start_date=start_date, end_date=end_date)
 
-    gcs_handler: GCSHandler = GCSHandler("analytics-meteorology-dev", "analytics-weather-data-storage-dev")
-    gcs_handler.upload_bytes(data=json.dumps(data).encode("utf-8"), destination_blob_name="forecast.json")
+    bucket_name: str = json_input["bucket_name"]
+    dest_dir_path: str = f"forecast/raw/{current_date}"
+    dest_file_name: str = f"{run_execution_id}_{start_date}_to_{end_date}.json"
+    destination_blob_name: str = f"{dest_dir_path}/{dest_file_name}"
+    gcs_handler: GCSHandler = GCSHandler(project_id=project_id, bucket_name=bucket_name)
+    gcs_handler.upload_bytes(
+        data=json.dumps(data).encode("utf-8"), 
+        destination_blob_name=destination_blob_name
+    )
 
-    logger.info(f"Forecast: {data}")
+    logger.info(f"Data uploaded to GCS: {bucket_name}/{destination_blob_name}")
 
 
 
