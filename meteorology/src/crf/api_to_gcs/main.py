@@ -4,6 +4,8 @@ import logging
 from datetime import datetime
 from modules.helpers.logging import set_up_logger
 from modules.meteorology.general import ForecastAPIHandler
+from modules.helpers.storage import GCSHandler
+import json
 
 @http
 def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
@@ -24,9 +26,15 @@ def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
     end_date: datetime = datetime.strptime(json_input["end_date"], "%Y-%m-%d")
     timezone: str = json_input["timezone"]
 
-    forecast_api_handler: ForecastAPIHandler = ForecastAPIHandler(latitude, longitude, start_date, end_date, timezone)
-    json: dict = forecast_api_handler.get_forecast()
-    logger.info(f"Forecast: {json}")
+    forecast_api_handler: ForecastAPIHandler = ForecastAPIHandler(latitude, longitude, timezone)
+    data: dict = forecast_api_handler.get_forecast(start_date=start_date, end_date=end_date)
+
+    gcs_handler: GCSHandler = GCSHandler("analytics-meteorology-dev", "analytics-weather-data-storage-dev")
+    gcs_handler.upload_bytes(data=json.dumps(data).encode("utf-8"), destination_blob_name="forecast.json")
+
+    logger.info(f"Forecast: {data}")
+
+
 
     return ("Hello, World!", 200, {"Content-Type": "text/plain"})
         
