@@ -21,6 +21,7 @@ This script will get the data from the API and upload it to GCS
 #### JSON Body
 {   
     "project_id": "my-project",
+    "modality": "forecast",
     "bucket_name": "my_bucket",
     "run_execution_id": "123456789",
     "start_date": "2025-01-01",

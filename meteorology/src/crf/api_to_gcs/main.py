@@ -16,7 +16,7 @@ def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
 
     logger: logging.Logger = set_up_logger()
 
-    current_date: datetime = datetime.now()
+    current_date: datetime = datetime.now().date()
 
     logger.info("Hello from GCP Logging!")
     json_input: dict = request.get_json()
@@ -31,8 +31,13 @@ def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
     end_date: datetime = datetime.strptime(json_input["end_date"], "%Y-%m-%d")
     timezone: str = json_input["timezone"]
 
-    forecast_api_handler: ForecastAPIHandler = ForecastAPIHandler(latitude, longitude, timezone)
-    data: dict = forecast_api_handler.get_forecast(start_date=start_date, end_date=end_date)
+    modality: str = json_input["modality"]
+    match modality:
+        case "forecast":
+            weather_api_handler: ForecastAPIHandler = ForecastAPIHandler(latitude, longitude, timezone)
+            data: dict = weather_api_handler.get_forecast(start_date=start_date, end_date=end_date)
+        case _:
+            raise ValueError(f"Modality {modality} not supported")
 
     bucket_name: str = json_input["bucket_name"]
     dest_dir_path: str = f"forecast/raw/{current_date}"
