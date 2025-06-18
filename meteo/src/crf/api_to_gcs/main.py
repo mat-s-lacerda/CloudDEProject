@@ -6,7 +6,6 @@ from modules.helpers.logging import set_up_logger
 from modules.meteorology.general import ForecastAPIHandler
 from modules.helpers.storage import GCSHandler
 import json
-
 @http
 def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
     """
