@@ -1,12 +1,10 @@
 variable "project_id" {
   type        = string
-  default     = "analytics-meteorology-dev"
   description = "The GCP project ID to deploy resources into."
 }
 
 variable "region" {
   type        = string
-  default     = "us-central1"
   description = "The GCP region for deploying resources."
 
   validation {
@@ -17,6 +15,5 @@ variable "region" {
 
 variable "credentials_file" {
   type        = string
-  default     = "~/.gcp_sa_keys/sa-terraform-dev.json"
   description = "Path to the service account JSON key file."
 }
