@@ -12,8 +12,3 @@ variable "region" {
     error_message = "Region must be one of us-central1, europe-west1, or southamerica-east1."
   }
 }
-
-variable "credentials_file" {
-  type        = string
-  description = "Path to the service account JSON key file."
-}
