@@ -1,26 +1,26 @@
-name: Terraform CI/CD
+name: Terraform Dev
 
 on:
   push:
-    branches:
-      - dev
+    branches: [dev]
   pull_request:
+    branches: [dev]
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        env: [dev, prd]
     defaults:
       run:
-        working-directory: projects/meteo/cicd/terraform/environments/${{ matrix.env }}
+        working-directory: projects/meteo/cicd/terraform/environments/dev
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
 
       - name: Decode GCP credentials
         run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > gcp-key.json
@@ -28,9 +28,11 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Validate
+        run: terraform validate
+
       - name: Terraform Plan
-        run: terraform plan -var-file="${{ matrix.env }}.tfvars" -out=tfplan
+        run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/dev'
         run: terraform apply -auto-approve tfplan
