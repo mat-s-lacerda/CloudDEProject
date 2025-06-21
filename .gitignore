@@ -8,10 +8,6 @@ crash.log
 # .terraform directory (plugins, modules, backend info)
 .terraform/
 
-# Sensitive tfvars (optional, if you store credentials or secrets here)
-*.tfvars
-*.tfvars.json
-
 # Override files used for local settings
 override.tf
 override.tf.json
