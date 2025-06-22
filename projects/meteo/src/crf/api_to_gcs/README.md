@@ -10,7 +10,7 @@ This script will get the data from the API and upload it to GCS
 - Local
     - functions-framework --target=entrypoint --port=8080
 
-    - curl -X POST http://localhost:8080     -H "Content-Type: application/json"     -d '{     "project_id": "analytics-meteorology-dev",     "bucket_name": "analytics-weather-data-storage-dev",     "run_execution_id": "123456789",     "start_date": "2025-06-01",     "end_date": "2025-06-07",     "latitude": -23.5475,     "longitude": -46.6361,     "timezone": "America/Sao_Paulo" }'
+    - curl -X POST http://localhost:8080     -H "Content-Type: application/json"     -d '{     "project_id": "de-analytics-meteo-dev",     "bucket_name": "de-analytics-meteo-dev-batch-data-intake",     "run_execution_id": "123456789",     "start_date": "2025-06-01", "modality": "forecast",     "end_date": "2025-06-07",     "latitude": -23.5475,     "longitude": -46.6361,     "timezone": "America/Sao_Paulo" }'
 
 - Cloud Run Function (Remote)
     - curl -X POST https://us-west1-analytics-meteorology-dev.cloudfunctions.net/analytics-weather-data-forecast-api-extractor-dev \ 
