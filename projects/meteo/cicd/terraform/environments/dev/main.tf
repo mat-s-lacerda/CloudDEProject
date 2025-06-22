@@ -3,7 +3,7 @@ provider "google" {
   region      = var.region
 }
 
-resource "google_storage_bucket" "example" {
-  name     = "${var.project_id}-example-bucket"
+resource "google_storage_bucket" "bkt_batch_data_intake" {
+  name     = "${var.project_id}-batch-data-intake"
   location = var.region
 }
