@@ -1,6 +1,6 @@
 locals {
-    project_id = "de-analytics-meteo-dev"
-    region     = "us-central1"
+  project_id = "de-analytics-meteo-dev"
+  region     = "us-central1"
 }
 
 terraform {
