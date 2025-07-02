@@ -1,3 +1,6 @@
+# Zip Files
+*.zip
+
 # Terraform state files
 *.tfstate
 *.tfstate.backup
