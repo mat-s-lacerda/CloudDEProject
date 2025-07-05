@@ -9,6 +9,7 @@ locals {
       project_id  = "${var.project_id}"
       zip_path    = "/tmp/api_to_gcs.zip"
       env_vars = {
+        ENV        = "${var.env}"
         PROJECT_ID = "${var.project_id}"
       }
       source_bucket = "${module.buckets["infra_data_safekeeping"].bucket_name}"

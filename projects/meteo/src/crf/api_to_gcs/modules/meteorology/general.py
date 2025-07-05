@@ -48,7 +48,7 @@ class ForecastAPIHandler(WeatherAPIHandler):
             "end_date": end_date.date()
         }
         response: Response = HTTPHandler(self.base_url).get(self.endpoint, params)
-        logger.info(f"Response: {response.json()}")
         data: dict = response.json()
+        logger.info(f"Response: {data}")
         return data
     

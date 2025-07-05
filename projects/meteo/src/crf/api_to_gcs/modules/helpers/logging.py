@@ -1,34 +1,25 @@
-import logging
-import sys
+import os, logging
 from google.cloud.logging import Client as LogClient
-from google.cloud.logging.handlers import CloudLoggingHandler
 
-def set_up_logger() -> logging.Logger:
+def set_up_cloud_logs(**labels) -> None:
     """
-    Set up a logger for use in Cloud Functions.
+    Set up the logging module to output logs to the console and Stackdriver Logging.
 
-    The logger returned by this function is configured to log at the INFO level
-    and logs to both the Cloud Logging service and the console.
+    The log level is set to INFO for non-production environments and WARNING for production environments.
+    The log format is set to "%(asctime)s | %(levelname)s - [%(module)s:%(filename)s:%(lineno)d] - %(message)s".
+    The log messages are sent to the console and Stackdriver Logging, with the given labels.
 
-    If the logger has already been configured (i.e. it already has handlers), this
-    function does nothing and returns the existing logger.
-
-    This function is intended to be called once per module, and the logger it
-    returns should be used throughout the module.
-
-    Returns:
-        A configured Logger.
+    Args:
+        **labels: A dictionary of labels to add to the log messages.
     """
-    client: LogClient = LogClient()
+    level: int = logging.INFO #if os.environ.get("ENV") != "prd" else logging.WARNING
 
-    cloud_handler: CloudLoggingHandler = CloudLoggingHandler(client)
-    stream_handler: logging.StreamHandler = logging.StreamHandler(sys.stdout) 
-
-    logger: logging.Logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-
-    if not logger.handlers:
-        logger.addHandler(cloud_handler)
-        logger.addHandler(stream_handler)
-    
-    return logger
+    logging.basicConfig(
+        level=level,
+        format=("%(asctime)s | %(levelname)s - [%(module)s:%(filename)s:%(lineno)d] - %(message)s"),
+        handlers=[logging.StreamHandler()],
+    )
+    LogClient().setup_logging(
+        log_level=level,
+        labels=labels,
+    )
