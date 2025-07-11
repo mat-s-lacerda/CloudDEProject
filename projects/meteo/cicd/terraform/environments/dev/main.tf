@@ -1,1 +1,0 @@
-# ta tudo nos outro
