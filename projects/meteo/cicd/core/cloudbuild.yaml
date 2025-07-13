@@ -1,0 +1,43 @@
+steps:
+  # Step 1: Terraform Init
+  - name: hashicorp/terraform:light
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform init -backend-config="bucket=de-analytics-meteo-${_ENV}-tfstate" -backend-config="prefix=terraform/${_ENV}"
+
+    dir: projects/meteo/infrastructure/core
+
+  # Step 2: Select or create workspace
+  - name: hashicorp/terraform:light
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform workspace select ${_ENV} || terraform workspace new ${_ENV}
+    dir: projects/meteo/infrastructure/core
+
+  # Step 3: Terraform Plan
+  - name: hashicorp/terraform:light
+    id: plan
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform plan -var-file="${_ENV}.tfvars"
+    dir: projects/meteo/infrastructure/core
+
+  # Step 4: Terraform Apply
+  - name: hashicorp/terraform:light
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        terraform apply -auto-approve -var-file="${_ENV}.tfvars"
+    dir: projects/meteo/infrastructure/core
+
+substitutions:
+  _ENV: dev
+
+timeout: 1200s

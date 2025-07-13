@@ -29,19 +29,19 @@ variable "buckets" {
   default = {}
 }
 
-variable "functions" {
-  description = "(Optional) Custom Function config. If empty, a default one is generated."
-  type = map(object({
-    name          = string
-    entry_point   = string
-    zip_path      = string
-    env_vars      = map(string)
-    source_dir    = string
-    location      = string
-    description   = string
-    project_id    = string
-    source_bucket = string
-    source_object = string
-  }))
-  default = {}
-}
+#variable "functions" {
+#  description = "(Optional) Custom Function config. If empty, a default one is generated."
+#  type = map(object({
+#    name          = string
+#    entry_point   = string
+#    zip_path      = string
+#    env_vars      = map(string)
+#    source_dir    = string
+#    location      = string
+#    description   = string
+#    project_id    = string
+#    source_bucket = string
+#    source_object = string
+#  }))
+#  default = {}
+#}

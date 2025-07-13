@@ -1,8 +1,3 @@
-locals {
-  project_id = "de-analytics-meteo-dev"
-  region     = "us-central1"
-}
-
 terraform {
   required_providers {
     google = {
@@ -15,6 +10,6 @@ terraform {
 }
 
 provider "google" {
-  project = local.project_id
-  region  = local.region
+  project = var.project_id
+  region  = var.region
 }

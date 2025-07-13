@@ -1,14 +1,14 @@
 locals {
   default_buckets = {
-    batch_data_intake = {
-      name          = "${var.project_id}-batch-data-intake"
-      location      = "${var.region}"
-      force_destroy = true
-      labels = {
-        env  = "${var.env}"
-        type = "raw"
-      }
-    }
+    #batch_data_intake = {
+    #  name          = "${var.project_id}-batch-data-intake"
+    #  location      = "${var.region}"
+    #  force_destroy = true
+    #  labels = {
+    #    env  = "${var.env}"
+    #    type = "raw"
+    #  }
+    #}
 
     infra_data_safekeeping = {
       name          = "${var.project_id}-infra-data-safekeeping"
@@ -27,7 +27,7 @@ locals {
 module "buckets" {
   for_each = local.resolved_buckets
 
-  source        = "../../modules/google_cloud_storage"
+  source        = "../modules/google_cloud_storage"
   name          = each.value.name
   location      = each.value.location
   project_id    = var.project_id
