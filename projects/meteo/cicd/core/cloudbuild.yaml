@@ -1,42 +1,51 @@
 steps:
   # Terraform Init
-  - name: hashicorp/terraform:light
-    entrypoint: sh
-    args:
-      - -c
-      - |
-        echo "Initializing Terraform with workspace '${_ENV}'"
-        terraform init \
-          -backend-config="bucket=de-analytics-meteo-${_ENV}-tfstate" \
-          -backend-config="prefix=terraform/${_ENV}"
-    dir: projects/meteo/infrastructure/core
+  #- name: hashicorp/terraform:1.8.4
+  #  entrypoint: sh
+  #  args:
+  #    - -c
+  #    - |
+  #      echo "Initializing Terraform with workspace '${_ENV}'"
+  #      terraform init \
+  #        -backend-config="bucket=de-analytics-meteo-${_ENV}-tfstate" \
+  #        -backend-config="prefix=terraform/${_ENV}"
+  #  dir: projects/meteo/infrastructure/core
+#
+  ## Terraform Workspace Select or Create
+  #- name: hashicorp/terraform:1.8.4
+  #  entrypoint: sh
+  #  args:
+  #    - -c
+  #    - |
+  #      terraform workspace select ${_ENV} || terraform workspace new ${_ENV}
+  #  dir: projects/meteo/infrastructure/core
+#
+  ## Terraform Plan
+  #- name: hashicorp/terraform:1.8.4
+  #  id: plan
+  #  entrypoint: sh
+  #  args:
+  #    - -c
+  #    - |
+  #      terraform plan -var-file="${_ENV}.tfvars"
+  #  dir: projects/meteo/infrastructure/core
+#
+  ## Terraform Apply
+  #- name: hashicorp/terraform:1.8.4
+  #  entrypoint: sh
+  #  args:
+  #    - -c
+  #    - |
+  #      terraform apply -auto-approve -var-file="${_ENV}.tfvars"
+  #  dir: projects/meteo/infrastructure/core
 
-  # Terraform Workspace Select or Create
-  - name: hashicorp/terraform:light
+  ## Terraform Destroy
+  - name: hashicorp/terraform:1.8.4
     entrypoint: sh
     args:
       - -c
       - |
-        terraform workspace select ${_ENV} || terraform workspace new ${_ENV}
-    dir: projects/meteo/infrastructure/core
-
-  # Terraform Plan
-  - name: hashicorp/terraform:light
-    id: plan
-    entrypoint: sh
-    args:
-      - -c
-      - |
-        terraform plan -var-file="${_ENV}.tfvars"
-    dir: projects/meteo/infrastructure/core
-
-  # Terraform Apply
-  - name: hashicorp/terraform:light
-    entrypoint: sh
-    args:
-      - -c
-      - |
-        terraform apply -auto-approve -var-file="${_ENV}.tfvars"
+        terraform destroy -auto-approve -var-file="${_ENV}.tfvars"
     dir: projects/meteo/infrastructure/core
 
 timeout: 1200s
