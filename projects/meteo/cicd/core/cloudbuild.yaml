@@ -39,7 +39,6 @@ steps:
         terraform apply -auto-approve -var-file="${_ENV}.tfvars"
     dir: projects/meteo/infrastructure/core
 
-substitutions:
-  _ENV: dev
-
 timeout: 1200s
+options:
+  logging: CLOUD_LOGGING_ONLY
