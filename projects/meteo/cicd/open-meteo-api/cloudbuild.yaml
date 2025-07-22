@@ -8,8 +8,8 @@ steps:
         echo "Initializing Terraform with workspace '${_ENV}'"
         terraform init \
           -backend-config="bucket=de-analytics-meteo-${_ENV}-tfstate" \
-          -backend-config="prefix=terraform/${_ENV}"
-    dir: projects/meteo/infrastructure/core
+          -backend-config="prefix=terraform/${_ENV}/open-meteo-api"
+    dir: projects/meteo/infrastructure/open-meteo-api
 
   ## Terraform Workspace Select or Create
   - name: hashicorp/terraform:1.8.4
@@ -18,7 +18,7 @@ steps:
       - -c
       - |
         terraform workspace select ${_ENV} || terraform workspace new ${_ENV}
-    dir: projects/meteo/infrastructure/core
+    dir: projects/meteo/infrastructure/open-meteo-api
 
   ## Terraform Plan
   - name: hashicorp/terraform:1.8.4
@@ -28,7 +28,7 @@ steps:
       - -c
       - |
         terraform plan -var-file="${_ENV}.tfvars"
-    dir: projects/meteo/infrastructure/core
+    dir: projects/meteo/infrastructure/open-meteo-api
 
   # Terraform Apply
   - name: hashicorp/terraform:1.8.4
@@ -37,7 +37,7 @@ steps:
       - -c
       - |
         terraform apply -auto-approve -var-file="${_ENV}.tfvars"
-    dir: projects/meteo/infrastructure/core
+    dir: projects/meteo/infrastructure/open-meteo-api
 
   ### Terraform Destroy
   #- name: hashicorp/terraform:1.8.4
@@ -46,7 +46,7 @@ steps:
   #    - -c
   #    - |
   #      terraform destroy -auto-approve -var-file="${_ENV}.tfvars"
-  #  dir: projects/meteo/infrastructure/core
+  #  dir: projects/meteo/infrastructure/open-meteo-api
 
 timeout: 1200s
 options:

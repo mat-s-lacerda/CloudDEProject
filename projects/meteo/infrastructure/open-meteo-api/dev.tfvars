@@ -1,0 +1,5 @@
+env                 = "dev"
+project_id          = "de-analytics-meteo-dev"
+region              = "us-central1"
+core_infra_bucket   = "de-analytics-meteo-dev-tfstate"
+core_infra_prefix   = "terraform/dev"
