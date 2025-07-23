@@ -53,3 +53,4 @@ def entrypoint(request: Request) -> tuple[str, int, dict[str, str]]:
 
 
     return json.dumps({"success": True, "data": "Data extraction finished"}), 200, {"Content-Type": "text/plain"}
+
