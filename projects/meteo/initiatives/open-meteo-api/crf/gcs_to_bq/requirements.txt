@@ -1,4 +1,6 @@
-import json
-import pandas as pd
-from google.cloud import storage, bigquery
-from flask import Request, jsonify
+json
+pandas
+google-cloud-storage
+google-cloud-bigquery
+flask
+pandas_gbq

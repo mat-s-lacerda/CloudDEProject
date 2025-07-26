@@ -6,7 +6,7 @@ from google.cloud import storage, bigquery
 from flask import Request, jsonify
 
 @http
-def main(request: Request):
+def entrypoint(request: Request):
     """Cloud Function com trigger HTTP para ler JSON do GCS, flatten e carregar no BQ."""
     try:
         request_json = request.get_json()
@@ -32,6 +32,9 @@ def main(request: Request):
     if isinstance(json_data, dict):
         json_data = [json_data]
 
+    with open("data.json", "w") as f:
+        json.dump(json_data, f)
+        
     dfs = []
     for data in json_data:
         try:
