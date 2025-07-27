@@ -8,6 +8,7 @@ def entrypoint(request: Request):
     """Cloud Function com trigger HTTP para ler JSON do GCS, flatten e carregar no BQ."""
     try:
         request_json = request.get_json()
+        run_execution_id = request_json['run_execution_id']
         bucket_name = request_json['bucket_name']
         file_name = request_json['file']
         dataset_id = request_json['dataset']
@@ -36,13 +37,14 @@ def entrypoint(request: Request):
     for data in json_data:
         try:
             meta = {
-                "latitude": data["latitude"],
-                "longitude": data["longitude"],
-                "generationtime_ms": data["generationtime_ms"],
-                "utc_offset_seconds": data["utc_offset_seconds"],
+                "run_execution_id": run_execution_id,
+                "latitude": str(data["latitude"]),
+                "longitude": str(data["longitude"]),
+                "generationtime_ms": str(data["generationtime_ms"]),
+                "utc_offset_seconds": str(data["utc_offset_seconds"]),
                 "timezone": data["timezone"],
                 "timezone_abbreviation": data["timezone_abbreviation"],
-                "elevation": data["elevation"]
+                "elevation": str(data["elevation"])
             }
             hourly_data = data["hourly"]
             units = data["hourly_units"]
@@ -51,11 +53,11 @@ def entrypoint(request: Request):
 
         # Validação extra: todos os campos de hourly devem ter o mesmo tamanho
         expected_length = len(hourly_data["time"])
-        for key in hourly_data:
-            if len(hourly_data[key]) != expected_length:
-                return jsonify({
-                    "error": f"Inconsistência no campo '{key}': tamanho diferente de 'time' ({len(hourly_data[key])} vs {expected_length})"
-                }), 400
+        #for key in hourly_data:
+        #    if len(hourly_data[key]) != expected_length:
+        #        return jsonify({
+        #            "error": f"Inconsistência no campo '{key}': tamanho diferente de 'time' ({len(hourly_data[key])} vs {expected_length})"
+        #        }), 400
 
         # Flatten linha a linha
         for i in range(expected_length):
@@ -71,7 +73,7 @@ def entrypoint(request: Request):
     table_ref = f"{bq_client.project}.{dataset_id}.{table_id}"
 
     try:
-        job_config = bigquery.LoadJobConfig(autodetect=True)
+        job_config = bigquery.LoadJobConfig()
         job = bq_client.load_table_from_json(flattened_rows, table_ref, job_config=job_config)
         job.result()  # Aguarda a conclusão
     except Exception as e:
