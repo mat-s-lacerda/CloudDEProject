@@ -2,6 +2,7 @@ steps:
   # Terraform Init
   - name: hashicorp/terraform:1.8.4
     entrypoint: sh
+    id: init
     args:
       - -c
       - |
@@ -14,6 +15,7 @@ steps:
   ## Terraform Workspace Select or Create
   - name: hashicorp/terraform:1.8.4
     entrypoint: sh
+    id: define-current-workspace
     args:
       - -c
       - |
@@ -33,6 +35,7 @@ steps:
   # Terraform Apply
   - name: hashicorp/terraform:1.8.4
     entrypoint: sh
+    id: apply
     args:
       - -c
       - |
@@ -42,6 +45,7 @@ steps:
   ### Terraform Destroy
   #- name: hashicorp/terraform:1.8.4
   #  entrypoint: sh
+  #  id: destroy
   #  args:
   #    - -c
   #    - |
